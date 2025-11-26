@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <el-button type="primary" @click="Test()" style="width:130px;">测试后端</el-button>
+    <el-button type="primary" @click="Test()" style="width:130px;">Home</el-button>
   </div>
 </template>
 
@@ -9,10 +9,7 @@ export default {
   name: "HomeComponent",
   methods: {
     Test() {
-
-      this.$axios.get("http://192.168.121.188:8081/apply/test").then((res) => {
-        console.log(res.data);
-      })
+      console.log("Home Button Clicked");
     },
   },
 };
