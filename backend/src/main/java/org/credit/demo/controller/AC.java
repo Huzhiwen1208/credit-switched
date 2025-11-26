@@ -1,7 +1,8 @@
 package org.credit.demo.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.credit.demo.Result;
@@ -10,13 +11,15 @@ import org.credit.demo.Result;
 @RestController
 @RequestMapping("/apply")
 public class AC {
-    @GetMapping("/test")
-    public Result getAllStudent() {
+    @PostMapping("/login")
+    public Result login(@RequestBody loginArgs args){
         Result r = new Result();
         try {
-            r.setMsg("操作成功");
-            r.setCode(200);
-            r.setData(Object.class);
+            if (args.getAccount().equals("mark") && args.getPasswd().equals("123456")) {
+                r.setMsg("操作成功");
+                r.setCode(200);
+                r.setData("Success");
+            }
         } catch (Exception e) {
             r.setData(null);
             r.setMsg("操作失败");
