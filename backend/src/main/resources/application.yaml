@@ -1,3 +1,15 @@
 server: 
   port: 8081
-
+  error:
+    include-message: always
+spring:
+  mail:
+    host: smtp.qq.com
+    username: 2587879285@qq.com
+    password: gbwigdwcrksdeaji  # 注意：这里填授权码，不是QQ密码
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
