@@ -10,7 +10,7 @@ export default {
   methods: {
     Test() {
 
-      this.$axios.get("http://192.168.121.188:8081/apply/test").then((res) => {
+      this.$axios.get("http://192.168.136.188:8081/apply/test").then((res) => {
         console.log(res.data);
       })
     },
