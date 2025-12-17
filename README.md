@@ -25,9 +25,10 @@ To run both the frontend and backend services, execute the following script:
 # Development Notes
 ## Branch format
 ```shell
-BranchName: jackhu/[bugfix/feature]/implement-login
+BranchName: jackhu/[bugfix/feature/refactor]/implement-login
   1. eg: jackhu/bugfix/fix-login-passwd-error
   2. eg: jackhu/feature/add-user-name
+  3. eg: jackhu/refactor/backend-code
 ```
 ## Commit message format
 ```shell
