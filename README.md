@@ -21,3 +21,28 @@ To run both the frontend and backend services, execute the following script:
 ```shell
 ./run.sh
 ```
+
+# Development Notes
+## Branch format
+```shell
+BranchName: jackhu/[bugfix/feature]/implement-login
+  1. eg: jackhu/bugfix/fix-login-passwd-error
+  2. eg: jackhu/feature/add-user-name
+```
+## Commit message format
+```shell
+# Commit Message Format eg: 
+Backend: entity: add User entity
+
+Details: xxxxxx
+```
+## How to Commit your code
+```shell
+git checkout master
+git pull
+
+git checkout -b <your-branch-name>
+# developing
+git push -f
+# Make pull request(MR, PR)
+```
