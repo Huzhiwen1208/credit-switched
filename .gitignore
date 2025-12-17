@@ -2,6 +2,12 @@ backend/target
 frontend/node_modules
 .DS_Store
 .env
+package-lock.json
+frontend/README.md
+frontend/package.json
+frontend/package-lock.json
+frontend/jsconfig.json
+frontend/babel.config.js
 .vscode/
 .idea/
 *.log
