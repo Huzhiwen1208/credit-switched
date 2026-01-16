@@ -81,7 +81,7 @@
 </template>
 
 <script>
-// 1. 必须放在最顶部的引入！
+/*  1. 必须放在最顶部的引入！*/
 import axios from 'axios'
 
 export default {
@@ -177,7 +177,7 @@ export default {
     },
 
     // ---------------------------------------
-    // 3. 发送邮件验证码 (注册流程核心)
+    /* 3. 发送邮件验证码 */
     // ---------------------------------------
     // 核心功能：请求发送邮箱验证码
     async sendEmailCode() {
@@ -186,51 +186,52 @@ export default {
       if (!this.registerForm.captcha) return this.showDialog("请填写图片验证码", "警告");
 
       try {
-        // 2. 发送请求给后端
-        // 注意：这里使用了代理路径 /api/...
-        // 后端会先校验 imageCaptcha，如果错了会直接报错抛出异常
-        await this.$axios.post('/api/apply/send-email-code', {
+        /*2. 发送请求给后端*/
+        this.loading = true
+        const res = await this.$axios.post('/api/apply/send-email-code', {
           email: this.registerForm.email,
           captcha: this.registerForm.captcha
         });
-        this.showDialog("邮件发送成功，请查收！", "成功");
-
+        if(res.code ===200){
+            this.showDialog(res.msg, "成功");
+        }else{
+            this.showDialog(res.msg || "邮件发送失败", "错误");
+            this.refreshCaptcha();
+        }
       } catch (error) {
-        // 4. 失败逻辑 (图片验证码错误或网络问题)
         console.error(error);
-        // 如果后端返回了错误信息，这里显示出来
         const msg = error.response && error.response.data ? error.response.data.message : "发送失败，请检查验证码";
         this.showDialog(msg, "错误");
-
-        // 失败后，通常图片验证码就失效了，自动刷新一张新的给用户
         this.refreshCaptcha();
+      }finally {
+        this.loading = false
       }
     },
 
     // ---------------------------------------
-    // 4. 提交注册
+    /* 4. 提交注册 */
     // ---------------------------------------
     async handleRegister() {
-      // 简单校验
       if (!this.registerForm.emailCode) return this.showDialog("请填写邮件验证码", "警告");
 
       try {
         this.loading = true
-        // 提交注册：后端校验邮件验证码是否正确
-        await axios.post('/api/apply/register', {
+        /* 提交注册：后端校验邮件验证码是否正确*/
+        const res = await axios.post('/api/apply/register', {
           email: this.registerForm.email,
           password: this.registerForm.password,
-          code: this.registerForm.emailCode // 注意字段名要和后端DTO一致
+          code: this.registerForm.emailCode
         })
-
-        this.showDialog('注册成功，点击确定前往登录', '恭喜', 'register_success');
-
+        if(res.code !== 200){
+            this.showDialog(res.data.msg || "注册失败", "错误");
+        }else{
+            this.showDialog("注册成功，点击确定前往登录", "恭喜", "register_success");
+        }
       } catch (error) {
-        console.error(error); // 在控制台打印详细错误
-        // 尝试获取后端返回的具体错误文字
+        console.error(error);
         const msg = error.response && error.response.data ? error.response.data.message : "注册失败(未知错误)";
-        // 弹窗显示真正的错误原因
         this.showDialog(msg, "注册失败");
+      }finally {
         this.loading = false
       }
     },
@@ -247,17 +248,18 @@ export default {
           password: this.loginForm.password,
           captcha: this.loginForm.captcha // 登录也需要传图形码
         })
-
-        // 登录成功，保存 token
-        localStorage.setItem('token', res.data.token)
+        if(res.code !== 200){
+            this.showDialog(res.data.msg || "登录失败", "错误");
+            this.refreshCaptcha() 
+        }else{
         this.showDialog('登录成功！', '欢迎', 'login_success');
-
+        }
       } catch (error) {
         const msg = error.response && error.response.data.message
           ? error.response.data.message
           : '登录失败'
         this.showDialog(msg, "登录失败");
-        this.refreshCaptcha() // 密码错或验证码错，都刷新图片
+        this.refreshCaptcha() 
       } finally {
         this.loading = false
       }
