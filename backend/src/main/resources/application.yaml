@@ -6,7 +6,9 @@ spring:
   mail:
     host: smtp.qq.com
     username: 2587879285@qq.com
-    password: gbwigdwcrksdeaji  # 注意：这里填授权码，不是QQ密码
+    password: gbwpvdastxozqxsdiib
+    title: "界面注册验证码"
+    template: "您的注册验证码为：%s，五分钟内有效"
     properties:
       mail:
         smtp:

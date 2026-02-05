@@ -10,7 +10,7 @@ module.exports = defineConfig({
     proxy: {
       '/api': {
         // 1. 这里一定要填你【虚拟机】的 IP，不能填 localhost
-        target: 'http://192.168.121.188:8081', 
+        target: 'http://192.168.136.188:8081', 
         changeOrigin: true,
         pathRewrite: {
           // 2. 这里的坑请注意：
