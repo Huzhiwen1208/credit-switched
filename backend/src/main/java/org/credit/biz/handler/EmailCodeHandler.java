@@ -16,7 +16,7 @@ public class EmailCodeHandler {
 
     @PostMapping("/send-email-code")
     public Result<Void> sendEmailCode(@RequestBody Map<String, String> params, HttpSession session) {
-        Result<Void> result=emailService.sendEmailCode(params, session);
+        Result<Void> result = emailService.sendEmailCode(params, session);
         return result;
     }
 }

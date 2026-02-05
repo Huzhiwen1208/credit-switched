@@ -11,7 +11,6 @@ import java.util.Random;
 
 @Service
 public class EmailServiceImpl implements EmailService {
-    
     private final String serviceEmail;
     private final String mailTitle;
     private final String emailTemplate;

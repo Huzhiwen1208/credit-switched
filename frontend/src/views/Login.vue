@@ -192,18 +192,18 @@ export default {
           email: this.registerForm.email,
           captcha: this.registerForm.captcha
         });
-        if(res.code ===200){
-            this.showDialog(res.msg, "成功");
-        }else{
-            this.showDialog(res.msg || "邮件发送失败", "错误");
-            this.refreshCaptcha();
+        if (res.code === 200) {
+          this.showDialog(res.msg, "成功");
+        } else {
+          this.showDialog(res.msg || "邮件发送失败", "错误");
+          this.refreshCaptcha();
         }
       } catch (error) {
         console.error(error);
         const msg = error.response && error.response.data ? error.response.data.message : "发送失败，请检查验证码";
         this.showDialog(msg, "错误");
         this.refreshCaptcha();
-      }finally {
+      } finally {
         this.loading = false
       }
     },
@@ -222,16 +222,16 @@ export default {
           password: this.registerForm.password,
           code: this.registerForm.emailCode
         })
-        if(res.code !== 200){
-            this.showDialog(res.data.msg || "注册失败", "错误");
-        }else{
-            this.showDialog("注册成功，点击确定前往登录", "恭喜", "register_success");
+        if (res.code !== 200) {
+          this.showDialog(res.data.msg || "注册失败", "错误");
+        } else {
+          this.showDialog("注册成功，点击确定前往登录", "恭喜", "register_success");
         }
       } catch (error) {
         console.error(error);
         const msg = error.response && error.response.data ? error.response.data.message : "注册失败(未知错误)";
         this.showDialog(msg, "注册失败");
-      }finally {
+      } finally {
         this.loading = false
       }
     },
@@ -243,23 +243,24 @@ export default {
       try {
         this.loading = true
         // 登录请求
+        console.log("Login: ", this.loginForm.email);
         const res = await axios.post('/api/apply/login', {
           email: this.loginForm.email,
           password: this.loginForm.password,
           captcha: this.loginForm.captcha // 登录也需要传图形码
         })
-        if(res.code !== 200){
-            this.showDialog(res.data.msg || "登录失败", "错误");
-            this.refreshCaptcha() 
-        }else{
-        this.showDialog('登录成功！', '欢迎', 'login_success');
+        if (res.code !== 200) {
+          this.showDialog(res.data.msg || "登录失败", "错误");
+          this.refreshCaptcha()
+        } else {
+          this.showDialog('登录成功！', '欢迎', 'login_success');
         }
       } catch (error) {
         const msg = error.response && error.response.data.message
           ? error.response.data.message
           : '登录失败'
         this.showDialog(msg, "登录失败");
-        this.refreshCaptcha() 
+        this.refreshCaptcha()
       } finally {
         this.loading = false
       }

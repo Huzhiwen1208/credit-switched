@@ -2,9 +2,8 @@ package org.credit.biz.model;
 
 import java.awt.image.BufferedImage;
 
-
+/** Note: 未来都要开发成充血模型，而不是贫血模型。什么是充血、贫血模型？ */
 public class CaptchaResult {
-
     private String code;
     private BufferedImage image;
 

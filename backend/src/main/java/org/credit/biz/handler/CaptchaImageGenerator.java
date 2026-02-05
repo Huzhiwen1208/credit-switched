@@ -22,7 +22,7 @@ public class CaptchaImageGenerator {
 
         /* 存储验证码到 Session */
         HttpSession session = request.getSession();
-        session.setAttribute(CAPTCHA_STR, code.toString());
+        session.setAttribute(CAPTCHA_STR, code);
 
         /* 设置响应头，告诉浏览器不要缓存图片 */
         response.setHeader("Pragma", "No-cache");
