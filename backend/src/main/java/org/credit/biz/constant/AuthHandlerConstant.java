@@ -1,18 +1,24 @@
 package org.credit.biz.constant;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import lombok.Data;
 
 /** TODO: 将该类做成配置类, 搜索 springboot 配置类 */
-@Configuration
+@Data
+@Component
+@ConfigurationProperties(prefix = "auth.handler")
 public class AuthHandlerConstant {
-    public String EMAIL;
-    public String CODE="code";
-    public String PASSWORD="password";
-    public String EMAIL_CODE_KEY="EMAIL_CODE_KEY";
-    public String REGISTER_EMAIL="REGISTER_EMAIL";
-    public String CAPTCHA_STR = "captcha";
-    public String LOGIN_USER="LOGIN_USER";
+    public String email;
+    public String code;
+    public String password;
+    public String emailCodeKey;
+    public String registerEmailKey;
+    public String captchaKey;
+    public String loginUserKey;
+    public String msg_1;
+    public String msg_2;
+    public String msg_3;
+    public String msg_4;
 }

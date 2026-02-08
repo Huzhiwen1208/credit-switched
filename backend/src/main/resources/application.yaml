@@ -15,3 +15,40 @@ spring:
           auth: true
           starttls:
             enable: true
+auth:
+  handler:
+    emailL: email
+    code: code
+    password: password
+    email-code-key: EMAIL_CODE_KEY
+    register-email: REGISTER_EMAIL
+    captcha-str: captcha
+    login-user: LOGIN_USER
+    msg_1: "邮箱验证码错误或过期"
+    msg_2: "注册邮箱与发送验证码邮箱不一致"
+    msg_3: "图片验证码错误或过期"
+    msg_4: "登录成功"
+
+captch:
+  captcha_str: "captcha"
+  pragma: "Pragma"
+  no_cache: "No-cache"
+  cache_control: "Cache-Control"
+  expires: "Expires"
+  content_type: "image/jpeg"
+  jpeg: "jpeg"
+
+emailservice:
+  captcha_str: "captcha"
+  email_code_key: "email"
+  session_email_code: "EMAIL_CODE_KEY"
+  session_register_email: "REGISTER_EMAIL"
+  msg_image: "图片验证码错误或者过期"
+  msg_mail: "邮箱验证码发送成功"
+
+userservice:
+  msg1: "该邮箱已注册"
+  msg2: "注册成功"
+  msg3: "该邮箱未注册"
+  msg4: "密码错误"
+  msg5: "登录成功"

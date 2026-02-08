@@ -16,58 +16,56 @@ import jakarta.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class AuthHandler {
 
-    private  AuthHandlerConstant constant;
+    private final AuthHandlerConstant constant;
     private final UserService userService;
 
     @PostMapping("/register")
     public Result<Void> register(@RequestBody Map<String, String> params, HttpSession session) {
-        String email = params.get(constant.EMAIL);
-        String code = params.get(constant.CODE);
-        String password = params.get(constant.PASSWORD);
+        String email = params.get(constant.email);
+        String code = params.get(constant.code);
+        String password = params.get(constant.password);
+
         /* 1. 校验邮箱验证码和注册邮箱与接收验证码的邮箱是否一致 */
-        String sessionCode = (String) session.getAttribute(constant.EMAIL_CODE_KEY);
-        String sessionEmail = (String) session.getAttribute(constant.REGISTER_EMAIL);
+        String sessionCode = (String) session.getAttribute(constant.emailCodeKey);
+        String sessionEmail = (String) session.getAttribute(constant.registerEmailKey);
 
         if (sessionCode == null || !sessionCode.equals(code)) {
-            Result<Void> result = new Result<>(400, constant.msg_1, null);
-            return result;
+            return new Result<>(400, constant.msg_1, null);
         }
         if (!email.equals(sessionEmail)) {
-            Result<Void> result = new Result<>(400, constant.msg_2, null);
-            return result;
+            return new Result<>(400, constant.msg_2, null);
         }
-
+        
         /* 2. 调用 UserService 完成注册 */
         Result<Void> result =  userService.register(email, password);
         
 
         /* 3. 注册成功后清理 Session */
-        session.removeAttribute(constant.EMAIL_CODE_KEY);
-        session.removeAttribute(constant.REGISTER_EMAIL);
+        session.removeAttribute(constant.emailCodeKey);
+        session.removeAttribute(constant.registerEmailKey);
 
         return result;
     }
 
     @PostMapping("/login")
     public Result<User> login(@RequestBody Map<String, String> params, HttpSession session) {
-        String email = params.get(constant.EMAIL);
-        String password = params.get(constant.PASSWORD);
-        String userCaptcha = params.get(constant.CAPTCHA_STR);
+        String email = params.get(constant.email);
+        String password = params.get(constant.password);
+        String userCaptcha = params.get(constant.captchaKey);
 
         /* 1. 校验图片验证码 */
-        String sessionCaptcha = (String) session.getAttribute(constant.CAPTCHA_STR);
+        String sessionCaptcha = (String) session.getAttribute(constant.captchaKey);
         if (sessionCaptcha == null || !sessionCaptcha.equalsIgnoreCase(userCaptcha)) {
-            Result<User> result = new Result<>(400, constant.msg_3, null);
-            return result;
+            return new Result<>(400, constant.msg_3, null);
         }
-        session.removeAttribute(constant.CAPTCHA_STR);
+        session.removeAttribute(constant.captchaKey); // 销毁验证码，防止复用
 
         /* 2. 调用 Service 进行登录校验 (从 static Map 读取) */
         Result<User> loginResult = userService.login(email, password);
 
         /* 3. 登录成功，存入 Session */
         if (loginResult.getCode() == 200) {
-            session.setAttribute(constant.LOGIN_USER, loginResult.getData());
+            session.setAttribute(constant.loginUserKey, loginResult.getData());
         }
         return loginResult;
     }
