@@ -13,6 +13,12 @@ import java.io.IOException;
 @RequestMapping("/apply")
 public class CaptchaImageGenerator {
     private static final String CAPTCHA_STR="captcha";
+    private static final String PRAGMA="Pragma";
+    private static final String NO_CACHE="no-cache";
+    private static final String CACHE_CONTROL="Cache-Control";
+    private static final String EXPIRES="Expires";
+    private static final String IMAGE_JPEG="image/jpeg";
+    private static final String JPEG="JPEG";
     
     @GetMapping("/image")
     public void getImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -25,13 +31,13 @@ public class CaptchaImageGenerator {
         session.setAttribute(CAPTCHA_STR, code);
 
         /* 设置响应头，告诉浏览器不要缓存图片 */
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setContentType("image/jpeg");
+        response.setHeader(PRAGMA, NO_CACHE);
+        response.setHeader(CACHE_CONTROL, NO_CACHE);
+        response.setDateHeader(EXPIRES, 0);
+        response.setContentType(IMAGE_JPEG);
 
         /* 输出图片到响应流 */
-        ImageIO.write(image, "JPEG", response.getOutputStream());
+        ImageIO.write(image, JPEG, response.getOutputStream());
     }
 
 }

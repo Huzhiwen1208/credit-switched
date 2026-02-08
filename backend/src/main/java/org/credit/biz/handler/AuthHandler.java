@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class AuthHandler {
 
-    private AuthHandlerConstant constant;
+    private  AuthHandlerConstant constant;
     private final UserService userService;
 
     @PostMapping("/register")
@@ -24,20 +24,16 @@ public class AuthHandler {
         String email = params.get(constant.EMAIL);
         String code = params.get(constant.CODE);
         String password = params.get(constant.PASSWORD);
-        /* 1. 校验邮箱验证码 */
+        /* 1. 校验邮箱验证码和注册邮箱与接收验证码的邮箱是否一致 */
         String sessionCode = (String) session.getAttribute(constant.EMAIL_CODE_KEY);
         String sessionEmail = (String) session.getAttribute(constant.REGISTER_EMAIL);
 
-        /*这两行打印代码，专门用来捉虫！*/
-        System.out.println(">>> 真正有效的验证码是：" + sessionCode);
-        System.out.println(">>> 你刚才输入的验证码是：" + code);
-
         if (sessionCode == null || !sessionCode.equals(code)) {
-            Result<Void> result = new Result<>(400, "邮箱验证码错误或过期", null);
+            Result<Void> result = new Result<>(400, constant.msg_1, null);
             return result;
         }
         if (!email.equals(sessionEmail)) {
-            Result<Void> result = new Result<>(400, "注册邮箱与发送验证码邮箱不一致", null);
+            Result<Void> result = new Result<>(400, constant.msg_2, null);
             return result;
         }
 
@@ -53,7 +49,7 @@ public class AuthHandler {
     }
 
     @PostMapping("/login")
-    public Result<Void> login(@RequestBody Map<String, String> params, HttpSession session) {
+    public Result<User> login(@RequestBody Map<String, String> params, HttpSession session) {
         String email = params.get(constant.EMAIL);
         String password = params.get(constant.PASSWORD);
         String userCaptcha = params.get(constant.CAPTCHA_STR);
@@ -61,7 +57,7 @@ public class AuthHandler {
         /* 1. 校验图片验证码 */
         String sessionCaptcha = (String) session.getAttribute(constant.CAPTCHA_STR);
         if (sessionCaptcha == null || !sessionCaptcha.equalsIgnoreCase(userCaptcha)) {
-            Result<Void> result = new Result<>(400, "图片验证码错误或过期", null);
+            Result<User> result = new Result<>(400, constant.msg_3, null);
             return result;
         }
         session.removeAttribute(constant.CAPTCHA_STR);
@@ -70,15 +66,9 @@ public class AuthHandler {
         Result<User> loginResult = userService.login(email, password);
 
         /* 3. 登录成功，存入 Session */
-        session.setAttribute(constant.LOGIN_USER, loginResult.getData());
-        
-        if (loginResult.getCode()!= 200) {
-            Result<Void> result = new Result<>(loginResult.getCode(), loginResult.getMsg(), null);
-            return result;
+        if (loginResult.getCode() == 200) {
+            session.setAttribute(constant.LOGIN_USER, loginResult.getData());
         }
-
-        String msg="登录成功";
-        Result<Void> result = new Result<>(200, msg, null);
-        return result;
+        return loginResult;
     }
 }

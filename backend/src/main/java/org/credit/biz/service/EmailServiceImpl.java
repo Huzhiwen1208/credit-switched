@@ -15,7 +15,13 @@ public class EmailServiceImpl implements EmailService {
     private final String mailTitle;
     private final String emailTemplate;
     private final JavaMailSender mailSender;
+    private static final String CAPTCHA_STR = "captcha";
+    private static final String EMAIL_CODE_KEY = "email";
+    private static final String SESSION_EMAIL_CODE = "EMAIL_CODE_KEY";
+    private static final String SESSION_REGISTER_EMAIL = "REGISTER_EMAIL";
+    private final Random random = new Random();
 
+    /*构造函数 */
     public EmailServiceImpl(
             @Value("${spring.mail.username}") String serviceEmail,
             @Value("${spring.mail.title}") String mailTitle,
@@ -27,23 +33,21 @@ public class EmailServiceImpl implements EmailService {
         this.emailTemplate = emailTemplate;
         this.mailSender = mailSender;
     }
-    private static final String CAPTCHA_STR = "captcha";
-    private static final String EMAIL_CODE_KEY = "email";
-    private static final String SESSION_EMAIL_CODE = "EMAIL_CODE_KEY";
-    private static final String SESSION_REGISTER_EMAIL = "REGISTER_EMAIL";
-    private final Random random = new Random();
-
+    
     @Override
     public Result<Void> sendEmailCode(Map<String, String> params, HttpSession session) {
         String email = params.get(EMAIL_CODE_KEY);
         String imageCaptcha = params.get(CAPTCHA_STR);
+        String msg_image="图片验证码错误或者过期";
+        String mas_mail="邮箱验证码发送成功";
 
         /*  获取并校验图片验证码 */
         Object sess = session.getAttribute(CAPTCHA_STR);
+        /* 这里是多态的很好体现，子类可以直接赋值给父类，父类可以强制为子类 */
         String sessionCaptcha = (sess instanceof String) ? (String) sess : null;
 
         if (sessionCaptcha == null || !sessionCaptcha.equalsIgnoreCase(imageCaptcha)) {
-            Result<Void> result = new Result<>(400, "图片验证码错误或过期", null);
+            Result<Void> result = new Result<>(400, msg_image, null);
             return result;
         }
 
@@ -64,8 +68,7 @@ public class EmailServiceImpl implements EmailService {
         /*  销毁图片验证码（防止复用） */
         session.removeAttribute(CAPTCHA_STR);
 
-        String msg="邮箱验证码发送成功";
-        Result<Void> result = new Result<>(200, msg, null);
+        Result<Void> result = new Result<>(200, mas_mail, null);
         return result;
     }
 }
