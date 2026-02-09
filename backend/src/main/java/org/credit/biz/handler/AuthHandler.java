@@ -30,10 +30,10 @@ public class AuthHandler {
         String sessionEmail = (String) session.getAttribute(constant.registerEmailKey);
 
         if (sessionCode == null || !sessionCode.equals(code)) {
-            return new Result<>(400, constant.msg_1, null);
+            return new Result<>(400, constant.msg1, null);
         }
         if (!email.equals(sessionEmail)) {
-            return new Result<>(400, constant.msg_2, null);
+            return new Result<>(400, constant.msg2, null);
         }
         
         /* 2. 调用 UserService 完成注册 */
@@ -56,7 +56,7 @@ public class AuthHandler {
         /* 1. 校验图片验证码 */
         String sessionCaptcha = (String) session.getAttribute(constant.captchaKey);
         if (sessionCaptcha == null || !sessionCaptcha.equalsIgnoreCase(userCaptcha)) {
-            return new Result<>(400, constant.msg_3, null);
+            return new Result<>(400, constant.msg3, null);
         }
         session.removeAttribute(constant.captchaKey); // 销毁验证码，防止复用
 

@@ -17,8 +17,13 @@ public class AuthHandlerConstant {
     public String registerEmailKey;
     public String captchaKey;
     public String loginUserKey;
-    public String msg_1;
-    public String msg_2;
-    public String msg_3;
-    public String msg_4;
+    public String msg1;
+    public String msg2;
+    public String msg3;
+    public String msg4;
+    public String msg5;
+    public String msg6;
+    public String msg7;
+    public String msg8;
+    public String msg9;
 }

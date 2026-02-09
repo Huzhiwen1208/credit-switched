@@ -39,16 +39,16 @@ public class EmailServiceImpl implements EmailService {
     
     @Override
     public Result<Void> sendEmailCode(Map<String, String> params, HttpSession session) {
-        String email = params.get(constant.EMAIL_CODE_KEY);
-        String imageCaptcha = params.get(constant.CAPTCHA_STR);
+        String email = params.get(constant.emailCodeKey);
+        String imageCaptcha = params.get(constant.captchaStr);
 
         /*  获取并校验图片验证码 */
-        Object sess = session.getAttribute(constant.CAPTCHA_STR);
+        Object sess = session.getAttribute(constant.captchaStr);
         /* 这里是多态的很好体现，子类可以直接赋值给父类，父类可以强制为子类 */
         String sessionCaptcha = (sess instanceof String) ? (String) sess : null;
 
         if (sessionCaptcha == null || !sessionCaptcha.equalsIgnoreCase(imageCaptcha)) {
-            Result<Void> result = new Result<>(400, constant.msg_image, null);
+            Result<Void> result = new Result<>(400, constant.msgImage, null);
             return result;
         }
 
@@ -63,13 +63,13 @@ public class EmailServiceImpl implements EmailService {
         mailSender.send(message);
 
         /*  将验证码和邮箱绑定存入 Session */
-        session.setAttribute(constant.SESSION_EMAIL_CODE, emailCode);
-        session.setAttribute(constant.SESSION_REGISTER_EMAIL, email);
+        session.setAttribute(constant.sessionEmailCode, emailCode);
+        session.setAttribute(constant.sessionRegisterEmail, email);
 
         /*  销毁图片验证码（防止复用） */
-        session.removeAttribute(constant.CAPTCHA_STR);
+        session.removeAttribute(constant.captchaStr);
 
-        Result<Void> result = new Result<>(200, constant.msg_mail, null);
+        Result<Void> result = new Result<>(200, constant.msgMail, null);
         return result;
     }
 }

@@ -108,8 +108,8 @@ export default {
       /* 注册数据模型 */
       registerForm: {
         email: '',
-        captcha: '',    // 用于换取邮件的图形码
-        emailCode: '',  // 邮箱里收到的验证码
+        captcha: '',    
+        emailCode: '',
         password: ''
       },
 

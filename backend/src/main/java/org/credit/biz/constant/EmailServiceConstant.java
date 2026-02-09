@@ -9,10 +9,10 @@ import lombok.Data;
 @Component
 @ConfigurationProperties(prefix = "emailservice")
 public class EmailServiceConstant {
-    public  String CAPTCHA_STR;
-    public String EMAIL_CODE_KEY;
-    public String SESSION_EMAIL_CODE;
-    public String SESSION_REGISTER_EMAIL;
-    public String msg_image;
-    public String msg_mail;
+    public  String captchaStr;
+    public String emailCodeKey;
+    public String sessionEmailCode;
+    public String sessionRegisterEmail;
+    public String msgImage;
+    public String msgMail;
 }

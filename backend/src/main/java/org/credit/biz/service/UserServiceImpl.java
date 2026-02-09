@@ -1,7 +1,7 @@
 package org.credit.biz.service;
 
 import org.credit.biz.common.Result;
-import org.credit.biz.constant.UserServiceConstant;
+import org.credit.biz.constant.AuthHandlerConstant;
 import org.credit.biz.model.User;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +20,21 @@ public class UserServiceImpl implements UserService {
     程序启动时，它存在；程序关闭，数据就丢了。
     ============================================================*/
     private static final Map<String, User> MOCK_DB = new ConcurrentHashMap<>();
-    private final UserServiceConstant constant;
+    private final AuthHandlerConstant constant;
 
     
     @Override
     public Result<Void> register(String email, String password) {
         /* 1. 检查邮箱是否已经注册 */
         if (MOCK_DB.containsKey(email)) {
-            Result<Void> result = new Result<>(400, constant.getMsg1(), null);
+            Result<Void> result = new Result<>(400, constant.msg5, null);
             return result;
         }
         /* 2. 创建新用户并保存到“数据库” */
         User newUser = new User(email, password);
         MOCK_DB.put(email, newUser);
 
-        Result<Void> result = new Result<>(200, constant.getMsg2(), null);
+        Result<Void> result = new Result<>(200, constant.msg6, null);
         return result;
     }
     
@@ -45,17 +45,17 @@ public class UserServiceImpl implements UserService {
         
         /*2.检验邮箱是否注册 */
         if (user == null) {
-            Result<User> result = new Result<>(400, constant.getMsg3(), null);
+            Result<User> result = new Result<>(400, constant.msg7, null);
             return result;
         }
         
             /*3.检验密码是否正确 */
         if (!user.getPassword().equals(password)) {
-            Result<User> result = new Result<>(400, constant.getMsg4(), null);
+            Result<User> result = new Result<>(400, constant.msg8, null);
             return result;
         }
         
-        Result<User> result = new Result<>(200, constant.getMsg5(), user);
+        Result<User> result = new Result<>(200, constant.msg9, user);
         return result;
     }
 }

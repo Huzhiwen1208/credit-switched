@@ -6,7 +6,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 2587879285@qq.com
-    password: gbwpvdastxozqxsdiib
+    password: cwhjksudhpjjecgg
     title: "界面注册验证码"
     template: "您的注册验证码为：%s，五分钟内有效"
     properties:
@@ -17,17 +17,22 @@ spring:
             enable: true
 auth:
   handler:
-    emailL: email
-    code: code
-    password: password
-    email-code-key: EMAIL_CODE_KEY
-    register-email: REGISTER_EMAIL
-    captcha-str: captcha
-    login-user: LOGIN_USER
-    msg_1: "邮箱验证码错误或过期"
-    msg_2: "注册邮箱与发送验证码邮箱不一致"
-    msg_3: "图片验证码错误或过期"
-    msg_4: "登录成功"
+    email: "email"
+    code: "code"
+    password: "password"
+    email-code-key: "EMAIL_CODE_KEY"
+    register-email-key: "REGISTER_EMAIL"
+    captcha-key: "captcha"
+    login-user-key: "LOGIN_USER"
+    msg1: "邮箱验证码错误或过期"
+    msg2: "注册邮箱与发送验证码邮箱不一致"
+    msg3: "图片验证码错误或过期"
+    msg4: "登录成功"
+    msg5: "该邮箱已注册"
+    msg6: "注册成功"
+    msg7: "该邮箱未注册"
+    msg8: "密码错误"
+    msg9: "登录成功"
 
 captch:
   captcha_str: "captcha"
@@ -45,10 +50,3 @@ emailservice:
   session_register_email: "REGISTER_EMAIL"
   msg_image: "图片验证码错误或者过期"
   msg_mail: "邮箱验证码发送成功"
-
-userservice:
-  msg1: "该邮箱已注册"
-  msg2: "注册成功"
-  msg3: "该邮箱未注册"
-  msg4: "密码错误"
-  msg5: "登录成功"
