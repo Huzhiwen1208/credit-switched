@@ -27,14 +27,14 @@ public class UserServiceImpl implements UserService {
     public Result<Void> register(String email, String password) {
         /* 1. 检查邮箱是否已经注册 */
         if (MOCK_DB.containsKey(email)) {
-            Result<Void> result = new Result<>(400, constant.msg5, null);
+            Result<Void> result = new Result<>(400, constant.msgEmailRegisted, null);
             return result;
         }
         /* 2. 创建新用户并保存到“数据库” */
         User newUser = new User(email, password);
         MOCK_DB.put(email, newUser);
 
-        Result<Void> result = new Result<>(200, constant.msg6, null);
+        Result<Void> result = new Result<>(200, constant.msgRegisterSuccess, null);
         return result;
     }
     
@@ -45,17 +45,17 @@ public class UserServiceImpl implements UserService {
         
         /*2.检验邮箱是否注册 */
         if (user == null) {
-            Result<User> result = new Result<>(400, constant.msg7, null);
+            Result<User> result = new Result<>(400, constant.msgEmailNotRegistered, null);
             return result;
         }
         
             /*3.检验密码是否正确 */
         if (!user.getPassword().equals(password)) {
-            Result<User> result = new Result<>(400, constant.msg8, null);
+            Result<User> result = new Result<>(400, constant.msgPasswordError, null);
             return result;
         }
         
-        Result<User> result = new Result<>(200, constant.msg9, user);
+        Result<User> result = new Result<>(200, constant.msgLoginSuccess, user);
         return result;
     }
 }

@@ -13,6 +13,6 @@ public class EmailServiceConstant {
     public String emailCodeKey;
     public String sessionEmailCode;
     public String sessionRegisterEmail;
-    public String msgImage;
-    public String msgMail;
+    public String msgImageError;
+    public String msgEmailSendSucess;
 }

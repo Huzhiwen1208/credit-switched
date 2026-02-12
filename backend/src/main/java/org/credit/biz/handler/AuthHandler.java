@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
 
-/** TODO: 去除警告 */
 @CrossOrigin
 @RestController
 @RequestMapping("/apply")
 @RequiredArgsConstructor
 public class AuthHandler {
 
-    private final AuthHandlerConstant constant;
+    private AuthHandlerConstant constant;
     private final UserService userService;
 
     @PostMapping("/register")
@@ -30,10 +29,10 @@ public class AuthHandler {
         String sessionEmail = (String) session.getAttribute(constant.registerEmailKey);
 
         if (sessionCode == null || !sessionCode.equals(code)) {
-            return new Result<>(400, constant.msg1, null);
+            return new Result<>(400, constant.msgEmailCaptchaError, null);
         }
         if (!email.equals(sessionEmail)) {
-            return new Result<>(400, constant.msg2, null);
+            return new Result<>(400, constant.msgRegisterEmailError, null);
         }
         
         /* 2. 调用 UserService 完成注册 */
@@ -56,7 +55,7 @@ public class AuthHandler {
         /* 1. 校验图片验证码 */
         String sessionCaptcha = (String) session.getAttribute(constant.captchaKey);
         if (sessionCaptcha == null || !sessionCaptcha.equalsIgnoreCase(userCaptcha)) {
-            return new Result<>(400, constant.msg3, null);
+            return new Result<>(400, constant.msgImageCaptchaError, null);
         }
         session.removeAttribute(constant.captchaKey); // 销毁验证码，防止复用
 

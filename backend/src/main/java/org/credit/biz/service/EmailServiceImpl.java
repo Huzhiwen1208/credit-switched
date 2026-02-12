@@ -48,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
         String sessionCaptcha = (sess instanceof String) ? (String) sess : null;
 
         if (sessionCaptcha == null || !sessionCaptcha.equalsIgnoreCase(imageCaptcha)) {
-            Result<Void> result = new Result<>(400, constant.msgImage, null);
+            Result<Void> result = new Result<>(400, constant.msgImageError, null);
             return result;
         }
 
@@ -69,7 +69,7 @@ public class EmailServiceImpl implements EmailService {
         /*  销毁图片验证码（防止复用） */
         session.removeAttribute(constant.captchaStr);
 
-        Result<Void> result = new Result<>(200, constant.msgMail, null);
+        Result<Void> result = new Result<>(200, constant.msgEmailSendSucess, null);
         return result;
     }
 }
