@@ -47,3 +47,8 @@ git checkout -b <your-branch-name>
 git push -f
 # Make pull request(MR, PR)
 ```
+
+/** TODO4:  */
+# Architecture Refinement
+0. 拆成两个子仓库，backend和frontend，分别维护后端和前端代码，避免不必要的耦合。使用 repo 管理多仓库，保持整体项目的统一性和协调性。
+1. https://github.com/Huzhiwen1208/credit-switched/issues/13

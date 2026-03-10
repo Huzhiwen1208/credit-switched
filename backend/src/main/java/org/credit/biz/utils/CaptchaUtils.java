@@ -47,7 +47,6 @@ public class CaptchaUtils {
         }
         
         g.dispose();
-        CaptchaResult captchaResult= new CaptchaResult(code.toString(), image);
-        return captchaResult;
+        return new CaptchaResult(code.toString(), image);
     }
 }

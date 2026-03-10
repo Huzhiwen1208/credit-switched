@@ -1,5 +1,6 @@
 package org.credit.biz.model;
 
+/** TODO2：充血模型改造 */
 public class User {
     private String email;
     private String password;

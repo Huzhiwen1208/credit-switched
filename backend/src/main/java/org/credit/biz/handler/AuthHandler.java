@@ -8,11 +8,8 @@ import org.credit.biz.service.EmailService;
 import org.credit.biz.service.UserService;
 import org.credit.biz.utils.CaptchaUtils;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,13 +40,11 @@ public class AuthHandler {
 
     @GetMapping("/image")
     public void getImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CaptchaResult caResult = CaptchaUtils.createCaptcha(); 
-        String code = caResult.getCode();
-        BufferedImage image = caResult.getImage();
+        CaptchaResult captcha = CaptchaUtils.createCaptcha(); 
 
         /* 存储验证码到 Session */
         HttpSession session = request.getSession();
-        session.setAttribute(captchImageGeneratorConstant.captchaStr, code);
+        captcha.setAttributeCaptchaStr(session, captchImageGeneratorConstant.captchaStr);
 
         /* 设置响应头，告诉浏览器不要缓存图片 */
         response.setHeader(captchImageGeneratorConstant.pragma, captchImageGeneratorConstant.noCache);
@@ -58,7 +53,7 @@ public class AuthHandler {
         response.setContentType(captchImageGeneratorConstant.imageJpeg);
 
         /* 输出图片到响应流 */
-        ImageIO.write(image, captchImageGeneratorConstant.jpeg, response.getOutputStream());
+        captcha.writeResponseImg(captchImageGeneratorConstant.jpeg, response.getOutputStream());
     }
 
     @PostMapping("/register")
