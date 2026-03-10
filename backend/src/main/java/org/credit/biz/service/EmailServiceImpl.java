@@ -1,50 +1,54 @@
 package org.credit.biz.service;
 import org.credit.biz.common.Result;
+import org.credit.biz.constant.EmailServiceConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Map;
 import java.util.Random;
 
 
 @Service
 public class EmailServiceImpl implements EmailService {
-    
     private final String serviceEmail;
     private final String mailTitle;
     private final String emailTemplate;
     private final JavaMailSender mailSender;
+    private final Random random = new Random();
+    private final EmailServiceConstant constant;
 
+
+    /*构造函数 */
     public EmailServiceImpl(
             @Value("${spring.mail.username}") String serviceEmail,
             @Value("${spring.mail.title}") String mailTitle,
             @Value("${spring.mail.template}") String emailTemplate,
-            JavaMailSender mailSender) {
+            JavaMailSender mailSender,
+            EmailServiceConstant constant) {
         
         this.serviceEmail = serviceEmail;
         this.mailTitle = mailTitle;
         this.emailTemplate = emailTemplate;
         this.mailSender = mailSender;
+        this.constant = constant;
     }
-    private static final String CAPTCHA_STR = "captcha";
-    private static final String EMAIL_CODE_KEY = "email";
-    private static final String SESSION_EMAIL_CODE = "EMAIL_CODE_KEY";
-    private static final String SESSION_REGISTER_EMAIL = "REGISTER_EMAIL";
-    private final Random random = new Random();
-
+    
     @Override
     public Result<Void> sendEmailCode(Map<String, String> params, HttpSession session) {
-        String email = params.get(EMAIL_CODE_KEY);
-        String imageCaptcha = params.get(CAPTCHA_STR);
+        String email = params.get(constant.emailCodeKey);
+        String imageCaptcha = params.get(constant.captchaStr);
 
         /*  获取并校验图片验证码 */
-        Object sess = session.getAttribute(CAPTCHA_STR);
+        Object sess = session.getAttribute(constant.captchaStr);
+        /* 这里是多态的很好体现，子类可以直接赋值给父类，父类可以强制为子类 */
         String sessionCaptcha = (sess instanceof String) ? (String) sess : null;
 
         if (sessionCaptcha == null || !sessionCaptcha.equalsIgnoreCase(imageCaptcha)) {
-            Result<Void> result = new Result<>(400, "图片验证码错误或过期", null);
+            Result<Void> result = new Result<>(400, constant.msgImageError, null);
             return result;
         }
 
@@ -59,14 +63,13 @@ public class EmailServiceImpl implements EmailService {
         mailSender.send(message);
 
         /*  将验证码和邮箱绑定存入 Session */
-        session.setAttribute(SESSION_EMAIL_CODE, emailCode);
-        session.setAttribute(SESSION_REGISTER_EMAIL, email);
+        session.setAttribute(constant.sessionEmailCode, emailCode);
+        session.setAttribute(constant.sessionRegisterEmail, email);
 
         /*  销毁图片验证码（防止复用） */
-        session.removeAttribute(CAPTCHA_STR);
+        session.removeAttribute(constant.captchaStr);
 
-        String msg="邮箱验证码发送成功";
-        Result<Void> result = new Result<>(200, msg, null);
+        Result<Void> result = new Result<>(200, constant.msgEmailSendSucess, null);
         return result;
     }
 }
