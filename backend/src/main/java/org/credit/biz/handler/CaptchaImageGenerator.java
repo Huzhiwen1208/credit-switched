@@ -1,6 +1,7 @@
 package org.credit.biz.handler;
 import org.credit.biz.model.CaptchaResult;
 import org.credit.biz.utils.CaptchaUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.credit.biz.constant.CaptchImageGeneratorConstant;
 import javax.imageio.ImageIO;
@@ -17,6 +18,7 @@ import java.io.IOException;
 @RequestMapping("/apply")
 @RequiredArgsConstructor
 public class CaptchaImageGenerator {
+    @Autowired
     private CaptchImageGeneratorConstant constant;
     
     @GetMapping("/image")

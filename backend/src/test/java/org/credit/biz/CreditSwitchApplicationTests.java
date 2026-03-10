@@ -14,8 +14,6 @@ import org.springframework.mock.web.MockHttpSession;
 import static org.junit.jupiter.api.Assertions.*;
 import org.credit.biz.model.User;
 
-
-/** TODO: 补充方法的单元测试, 并跑起来 */
 @SpringBootTest
 public class CreditSwitchApplicationTests {
     @Autowired

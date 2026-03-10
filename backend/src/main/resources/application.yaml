@@ -32,10 +32,9 @@ auth:
     msgRegisterSuccess: "注册成功"
     msgEmailNotRegistered: "该邮箱未注册"
     msgPasswordError: "密码错误"
-    msgLoginSuccess: "登录成功"
 
 captch:
-  captcha-str: "captcha"
+  captchaStr: "captcha"
   pragma: "Pragma"
   no-cache: "No-cache"
   cache-control: "Cache-Control"

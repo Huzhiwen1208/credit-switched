@@ -5,6 +5,8 @@ import org.credit.biz.model.User;
 import org.credit.biz.service.UserService;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
@@ -14,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/apply")
 @RequiredArgsConstructor
 public class AuthHandler {
-
+    @Autowired
     private AuthHandlerConstant constant;
     private final UserService userService;
 
