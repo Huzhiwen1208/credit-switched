@@ -6,7 +6,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 import java.util.Random;
@@ -48,8 +47,7 @@ public class EmailServiceImpl implements EmailService {
         String sessionCaptcha = (sess instanceof String) ? (String) sess : null;
 
         if (sessionCaptcha == null || !sessionCaptcha.equalsIgnoreCase(imageCaptcha)) {
-            Result<Void> result = new Result<>(400, constant.msgImageError, null);
-            return result;
+            return new Result<>(400, constant.msgImageError, null);
         }
 
         String emailCode = String.valueOf(random.nextInt(900000) + 100000);
@@ -69,7 +67,6 @@ public class EmailServiceImpl implements EmailService {
         /*  销毁图片验证码（防止复用） */
         session.removeAttribute(constant.captchaStr);
 
-        Result<Void> result = new Result<>(200, constant.msgEmailSendSucess, null);
-        return result;
+        return new Result<>(200, constant.msgEmailSendSucess, null);
     }
 }

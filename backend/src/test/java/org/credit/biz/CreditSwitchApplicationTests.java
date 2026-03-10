@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.credit.biz.common.Result;
 import org.credit.biz.handler.AuthHandler;
-import org.credit.biz.handler.EmailCodeHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,15 +14,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.credit.biz.model.User;
 
 @SpringBootTest
-public class CreditSwitchApplicationTests {
+class CreditSwitchApplicationTests {
     @Autowired
 	private AuthHandler authHandler;
-	@Autowired
-	private EmailCodeHandler emailCodeHandler;
 	MockHttpSession session = new MockHttpSession();
 
 	@Test
-	public void emailCodeHandler_sendEmailCode_should_return_sendEmail_sucesss_when_email_is_send_sucesss() {
+	void sendEmailCode_should_return_sucesss_happy_case() {
 		/* 模拟发送邮件验证码请求参数 */
 		Map<String, String> params = new HashMap<>();
 		params.put("email", "15039017198@163.com");
@@ -32,12 +29,12 @@ public class CreditSwitchApplicationTests {
 		/* 模拟 Session 中存储的验证码与发送来的不一样 */
 		session.setAttribute("captcha", "666666");
 
-		Result<Void> r =emailCodeHandler.sendEmailCode(params, session);
+		Result<Void> r =authHandler.sendEmailCode(params, session);
 		assertEquals("邮箱验证码发送成功", r.getMsg(), "发送邮件验证码功能有问题");
 	}
 
 	@Test
-	public void emailCodeHandler_sendEmailCode_should_return_sendEmail_fail_when_captcha_is_wrong() {
+	void emailCodeHandler_sendEmailCode_should_return_sendEmail_fail_when_captcha_is_wrong() {
 		/* 模拟发送邮件验证码请求参数 */
 		Map<String, String> params = new HashMap<>();
 		params.put("email", "15039017198@163.com");
@@ -45,12 +42,12 @@ public class CreditSwitchApplicationTests {
 
 		session.setAttribute("captcha", "666666");
 
-		Result<Void> r =emailCodeHandler.sendEmailCode(params, session);
+		Result<Void> r =authHandler.sendEmailCode(params, session);
 		assertEquals("图片验证码错误或者过期", r.getMsg(), "发送邮件验证码功能有问题");
 	}
 
 	@Test
-	public void testAuthHander_register_should_return_register_success_when_sucsess_register() {
+	void testAuthHander_register_should_return_register_success_when_sucsess_register() {
 		/* 模拟注册请求请求参数 */
         Map<String, String> params = new HashMap<>();
         params.put("email", "test@qq.com");
@@ -66,7 +63,7 @@ public class CreditSwitchApplicationTests {
 	}
     
 	@Test
-	public void testAuthHander_register_should_return_register_fail_when_captcha_is_wrong() {
+	void testAuthHander_register_should_return_register_fail_when_captcha_is_wrong() {
 		/* 模拟注册请求请求参数 */
         Map<String, String> params = new HashMap<>();
         params.put("email", "test@qq.com");
@@ -82,7 +79,7 @@ public class CreditSwitchApplicationTests {
 	}
 
 	@Test
-	public void testAuthHander_register_should_return_register_fail_when_registeremail_is_registed() {
+	void testAuthHander_register_should_return_register_fail_when_registeremail_is_registed() {
 		/* 模拟注册请求请求参数 */
         Map<String, String> params = new HashMap<>();
         params.put("email", "test@qq.com");
@@ -102,10 +99,8 @@ public class CreditSwitchApplicationTests {
 		assertEquals("该邮箱已注册", r.getMsg(), "邮箱已注册检验功能有问题");
 	}
 
-
-
 	@Test
-	public void testAuthHander_login_should_return_login_success_when_login_is_correct() {
+	void testAuthHander_login_should_return_login_success_when_login_is_correct() {
 		/* 模拟登录请求请求参数 */
         Map<String, String> params = new HashMap<>();
         params.put("email", "test@qq.com");
@@ -129,7 +124,7 @@ public class CreditSwitchApplicationTests {
 	}
 
 	@Test
-	public void testAuthHander_login_should_return_errorCaptcha_when_captcha_is_wrong() {
+	void testAuthHander_login_should_return_errorCaptcha_when_captcha_is_wrong() {
 		/* 模拟登录请求请求参数 */
         Map<String, String> params = new HashMap<>();
         params.put("email", "test@qq.com");
@@ -144,7 +139,7 @@ public class CreditSwitchApplicationTests {
 	}
 
 	@Test
-	public void testAuthHander_login_should_return_login_fail_when_logineamil_is_not_register() {
+	void testAuthHander_login_should_return_login_fail_when_logineamil_is_not_register() {
 		/* 模拟登录请求请求参数 */
         Map<String, String> params = new HashMap<>();
         params.put("email", "test@qq.com");
@@ -159,7 +154,7 @@ public class CreditSwitchApplicationTests {
 	}
 
 	@Test
-	public void testAuthHander_login_should_return_login_fail_when_password_is_wrong() {
+	void testAuthHander_login_should_return_login_fail_when_password_is_wrong() {
 		/* 模拟登录请求请求参数 */
         Map<String, String> params = new HashMap<>();
         params.put("email", "test@qq.com");
@@ -177,10 +172,7 @@ public class CreditSwitchApplicationTests {
 		session.setAttribute("REGISTER_EMAIL", "test@qq.com");
 		authHandler.register(params1, session);
 
-
 		Result<User> r =authHandler.login(params, session);
 		assertEquals("密码错误", r.getMsg(), "未能识别密码错误的问题");
 	}
-
-
 }
